@@ -1,23 +1,20 @@
 import Link from 'next/link'
+import { Post } from '@/types'
 
-export default function Home() {
+export default async function Home() {
   // サンプルデータ
-  const items = [
-    { id: 1, title: "項目 1" },
-    { id: 2, title: "項目 2" },
-    { id: 3, title: "項目 3" },
-  ];
-
+  const data = await fetch('https://api.vercel.app/blog')
+  const posts = await data.json() as Post[]
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">リスト表示</h1>
       <ul className="space-y-2">
-        {items.map((item) => (
-          <Link href={`/detail/${item.id}`} key={item.id}>
+        {posts.map((post: Post) => (
+          <Link href={`/detail/${post.id}`} key={post.id}>
             <li
-              className="p-3 bg-blue-100 rounded-lg hover:bg-blue-200"
+              className="p-3 mt-2 bg-blue-100 rounded-lg hover:bg-blue-200"
             >
-              {item.title}
+              {post.title}
             </li>
           </Link>
         ))}
